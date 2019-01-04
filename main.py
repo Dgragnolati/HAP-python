@@ -16,7 +16,7 @@ from pyhap import camera
 from pyhap.const import CATEGORY_SENSOR
 from accessories.AM2302 import AM2302
 
-logging.basicConfig(level=logging.INFO, format="[%(module)s] %(message)s")
+logging.basicConfig(level=logging.DEBUG, format="[%(module)s] %(message)s")
 
 
 def get_accessory(driver):
