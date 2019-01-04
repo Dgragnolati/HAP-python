@@ -1,64 +1,50 @@
-"""An example of how to setup and start an Accessory.
-
-This is:
-1. Create the Accessory object you want.
-2. Add it to an AccessoryDriver, which will advertise it on the local network,
-    setup a server to answer client queries, etc.
+"""An Accessory for the AM2302 temperature and humidity sensor.
+Assumes the DHT22 module is in a package called sensors.
+Also, make sure pigpiod is running.
+The DHT22 module was taken from
+https://www.raspberrypi.org/forums/viewtopic.php?f=37&t=71336
 """
-import logging
-import signal
+import time
 import random
 
-from pyhap.accessory import Accessory, Bridge
-from pyhap.accessory_driver import AccessoryDriver
-import pyhap.loader as loader
-from pyhap import camera
+import pigpio
+import sensors.DHT22 as DHT22
+
+from pyhap.accessory import Accessory
 from pyhap.const import CATEGORY_SENSOR
 
-logging.basicConfig(level=logging.INFO, format="[%(module)s] %(message)s")
 
-
-class TemperatureSensor(Accessory):
-    """Fake Temperature sensor, measuring every 3 seconds."""
+class AM2302(Accessory):
 
     category = CATEGORY_SENSOR
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, pin=4, **kwargs):
         super().__init__(*args, **kwargs)
+        self.pin = pin
 
         serv_temp = self.add_preload_service('TemperatureSensor')
-        self.char_temp = serv_temp.configure_char('CurrentTemperature')
+        serv_humidity = self.add_preload_service('HumiditySensor')
 
-    @Accessory.run_at_interval(3)
-    async def run(self):
-        self.char_temp.set_value(random.randint(18, 26))
+        self.char_temp = serv_temp.get_characteristic('CurrentTemperature')
+        self.char_humidity = serv_humidity \
+            .get_characteristic('CurrentRelativeHumidity')
 
+        self.sensor = DHT22.sensor(pigpio.pi(), pin)
 
-def get_bridge(driver):
-    """Call this method to get a Bridge instead of a standalone accessory."""
-    bridge = Bridge(driver, 'Bridge')
-    temp_sensor = TemperatureSensor(driver, 'Sensor 2')
-    temp_sensor2 = TemperatureSensor(driver, 'Sensor 1')
-    bridge.add_accessory(temp_sensor)
-    bridge.add_accessory(temp_sensor2)
+    def __getstate__(self):
+        state = super().__getstate__()
+        state['sensor'] = None
+        return state
 
-    return bridge
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        self.sensor = DHT22.sensor(pigpio.pi(), self.pin)
 
-
-def get_accessory(driver):
-    """Call this method to get a standalone Accessory."""
-    return TemperatureSensor(driver, 'MyTempSensor')
-
-
-# Start the accessory on port 51826
-driver = AccessoryDriver(port=51826)
-
-# Change `get_accessory` to `get_bridge` if you want to run a Bridge.
-driver.add_accessory(accessory=get_accessory(driver))
-
-# We want SIGTERM (terminate) to be handled by the driver itself,
-# so that it can gracefully stop the accessory, server and advertising.
-signal.signal(signal.SIGTERM, driver.signal_handler)
-
-# Start it!
-driver.start()
+    @Accessory.run_at_interval(10)
+    def run(self):
+        self.sensor.trigger()
+        time.sleep(0.2)
+        t = self.sensor.temperature()
+        h = self.sensor.humidity()
+        self.char_temp.set_value(t)
+        self.char_humidity.set_value(h)
