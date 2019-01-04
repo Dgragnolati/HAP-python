@@ -14,14 +14,14 @@ from pyhap.accessory_driver import AccessoryDriver
 import pyhap.loader as loader
 from pyhap import camera
 from pyhap.const import CATEGORY_SENSOR
-import accessories.AM2303 as DH22
+from accessories.AM2302 import AM2302
 
 logging.basicConfig(level=logging.INFO, format="[%(module)s] %(message)s")
 
 
 def get_accessory(driver):
     """Call this method to get a standalone Accessory."""
-    return DH22(driver, 'MyTempSensor')
+    return AM2302(driver, 'MyTempSensor')
 
 
 # Start the accessory on port 51826
