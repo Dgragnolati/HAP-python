@@ -14,14 +14,40 @@ from pyhap.accessory_driver import AccessoryDriver
 import pyhap.loader as loader
 from pyhap import camera
 from pyhap.const import CATEGORY_SENSOR
-import accessories.AM2303 as DH22
 
 logging.basicConfig(level=logging.INFO, format="[%(module)s] %(message)s")
 
 
+class TemperatureSensor(Accessory):
+    """Fake Temperature sensor, measuring every 3 seconds."""
+
+    category = CATEGORY_SENSOR
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        serv_temp = self.add_preload_service('TemperatureSensor')
+        self.char_temp = serv_temp.configure_char('CurrentTemperature')
+
+    @Accessory.run_at_interval(3)
+    async def run(self):
+        self.char_temp.set_value(random.randint(18, 26))
+
+
+def get_bridge(driver):
+    """Call this method to get a Bridge instead of a standalone accessory."""
+    bridge = Bridge(driver, 'Bridge')
+    temp_sensor = TemperatureSensor(driver, 'Sensor 2')
+    temp_sensor2 = TemperatureSensor(driver, 'Sensor 1')
+    bridge.add_accessory(temp_sensor)
+    bridge.add_accessory(temp_sensor2)
+
+    return bridge
+
+
 def get_accessory(driver):
     """Call this method to get a standalone Accessory."""
-    return DH22(driver, 'MyTempSensor')
+    return TemperatureSensor(driver, 'MyTempSensor')
 
 
 # Start the accessory on port 51826
