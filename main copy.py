@@ -15,7 +15,7 @@ import pyhap.loader as loader
 from pyhap import camera
 from pyhap.const import CATEGORY_SENSOR
 
-logging.basicConfig(filename="log_file.txt",level=logging.INFO, format="[%(module)s] %(message)s")
+logging.basicConfig(level=logging.DEBUG, format="[%(module)s] %(message)s")
 
 
 class TemperatureSensor(Accessory):
