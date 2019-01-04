@@ -21,7 +21,7 @@ logging.basicConfig(level=logging.INFO, format="[%(module)s] %(message)s")
 
 def get_accessory(driver):
     """Call this method to get a standalone Accessory."""
-    return AM2302(driver, 'MyTempSensor')
+    return AM2302(driver, 'Thermostat')
 
 
 # Start the accessory on port 51826

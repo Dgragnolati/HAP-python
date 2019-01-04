@@ -18,7 +18,7 @@ class AM2302(Accessory):
 
     category = CATEGORY_SENSOR
 
-    def __init__(self, *args, pin=4, **kwargs):
+    def __init__(self, *args, pin=22, **kwargs):
         super().__init__(*args, **kwargs)
         self.pin = pin
 
