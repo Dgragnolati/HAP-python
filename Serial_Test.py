@@ -13,5 +13,5 @@ while True:
     command=input("Enter Command")
     command_newline=str(command)+'\n'
     port.write(str.encode('command_newline'))
-    rcv = port.read(1)
+    rcv = port.read(4)
     print (rcv)
