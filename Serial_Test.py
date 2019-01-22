@@ -10,7 +10,7 @@ port.write(str.encode('start\n'))
 rcv = port.read(22)
 
 while True:
-    command=raw_input("Enter Command")
+    command=input("Enter Command")
     command_newline=str(command)+'\n'
     port.write(str.encode('command_newline'))
     rcv = port.read(1)
