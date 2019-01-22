@@ -6,7 +6,6 @@ rcv = port.read(10)
 print (rcv)
 
 while True:
-    port.write("start\n")
+    port.write('start\n')
     rcv = port.read(10)
     print (rcv)
-    
