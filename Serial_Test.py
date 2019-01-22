@@ -10,5 +10,5 @@ while True:
     rcv = port.read(10)
     print (rcv)
     command=raw_input("Enter Command")
-    command_newline=command+\n'
+    command_newline=str(command)+'\n'
     port.write(str.encode('command_newline'))
