@@ -10,10 +10,11 @@ port.write(str.encode('start\n'))
 rcv = port.read(22)
 port.write(str.encode('light_on\n'))
 rcv = port.read(4)
-
-while True:
-    command=input("Enter Command")
-    command_newline=str(command)+'\n'
-    port.write(str.encode('command_newline'))
-    rcv = port.read(4)
-    print (rcv)
+port.write(str.encode('pump_on\n'))
+rcv = port.read(4)
+port.write(str.encode('light_off\n'))
+rcv = port.read(4)
+port.write(str.encode('light\n'))
+rcv = port.read(4)
+port.write(str.encode('moisture\n'))
+rcv = port.read(4)
