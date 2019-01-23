@@ -8,6 +8,8 @@ print (rcv)
 print ("Requesting a Start")
 port.write(str.encode('start\n'))
 rcv = port.read(22)
+port.write(str.encode('light_on\n'))
+rcv = port.read(2)
 
 while True:
     command=input("Enter Command")
