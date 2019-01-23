@@ -3,12 +3,8 @@ import sys
 
 port = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=3.0)
 
-rcv = port.readline()
-print (rcv)
-print ("Requesting a Start")
-port.write(str.encode('start\n'))
-rcv = port.readline()
-print (rcv)
+
+
 port.write(str.encode('light_on\n'))
 rcv = port.readline()
 print (rcv)
