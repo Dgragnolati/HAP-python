@@ -78,7 +78,7 @@ class PlantLoveAccessory(Accessory):
     def get_average_light(self):
         return ""
 
-    @Accessory.run_at_interval(10)
+    @Accessory.run_at_interval(600)
     def run(self):
         logger.debug("Starting Loop Function")
         if self.blocking ==0:
