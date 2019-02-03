@@ -15,7 +15,11 @@ def send_command(command):
 
 
 print(send_command("light_on"))
+sleep(1)
 print(send_command("pump_on"))
+sleep(1)
 print(send_command("moisture"))
+sleep(1)
 print(send_command("light"))
+sleep(1)
 print(send_command("light_off"))
