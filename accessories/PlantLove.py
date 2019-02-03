@@ -30,7 +30,7 @@ class PlantLoveAccessory(Accessory):
             'IrrigationSystem', chars=['Active','ProgramMode','InUse'])
 
         self.char_sprinkler_status = serv_sprinkler.configure_char(
-            'Active', setter_callback=self.set_sprinkler_status)
+            'InUse', setter_callback=self.set_sprinkler_status)
         self.char_sprinkler_mode = serv_sprinkler.configure_char(
             'ProgramMode', setter_callback=self.set_sprinkler_program)
 
@@ -112,7 +112,7 @@ class PlantLoveAccessory(Accessory):
         print ("Starting Loop Function")
         if self.blocking ==0:
             print ("serial not blocked")
-            print ("phone thinks light status is %s ", self.char_growlamp_status)
+
             current_moisture=self.get_moisture_value()
             sleep(1)
             current_light=self.get_light_value()
@@ -129,7 +129,9 @@ class PlantLoveAccessory(Accessory):
             if (current_moisture < 500):
 
                 print ("Turning Pump On")
-                self.char_growlamp_status = self.turn_pump_on()
+                pump_status=self.turn_pump_on()
+                print ("pump status %s", pump_status)
+                self.char_growlamp_status = pump_status
                 print ("Pump Should Turn off in 2 Seconds")
 
             else:
