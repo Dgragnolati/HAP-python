@@ -69,7 +69,7 @@ class PlantLoveAccessory(Accessory):
         return str(rcv.decode('utf-8'))
 
     def publish_to_log(self,log_file_path,value):
-        with open(log_file_path, "a") as log_file
+        with open(log_file_path, "a") as log_file:
             log_file.write("{0},{1}\n".format(strftime("%Y-%m-%d %H:%M:%S"),str(value)))
 
     def turn_pump_on(self):
