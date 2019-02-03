@@ -51,14 +51,12 @@ class PlantLoveAccessory(Accessory):
         self.blocking=0
         # Add light sensors
         serv_lightsensor = self.add_preload_service('LightSensor', chars=['CurrentAmbientLightLevel'])
-        self.char_lightvalue = serv_lightsensor.configure_char(
-            'CurrentAmbientLightLevel')
+        self.char_lightvalue = serv_lightsensor.configure_char('CurrentAmbientLightLevel')
 
 
         # Add HumiditySensor sensors
         serv_humiditysensor = self.add_preload_service('HumiditySensor', chars=['CurrentRelativeHumidity'])
-        self.char_humidityvalue = serv_humiditysensor.configure_char(
-            'CurrentRelativeHumidity')
+        self.char_humidityvalue = serv_humiditysensor.configure_char('CurrentRelativeHumidity')
 
     # call back functions
 
@@ -132,6 +130,7 @@ class PlantLoveAccessory(Accessory):
         new_low=0
         scaler=float(value)/(old_high-old_low)
         new_value=scaler*float(new_high)
+        logger.debug("New Converted Value %s",new_value)
         return float(new_value)
 
     @Accessory.run_at_interval(60)
