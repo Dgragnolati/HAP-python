@@ -14,8 +14,8 @@ from time import sleep, strftime, time
 
 logger = logging.getLogger(__name__)
 port = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=3.0)
-LightLogPath = "/home/pi/HAP/light.csv"
-MoistureLogPath = "/home/pi/HAP/moisture.csv"
+LightLogPath = "/home/pi/HAP/HAP-python/light.csv"
+MoistureLogPath = "/home/pi/HAP/HAP-python/moisture.csv"
 
 class PlantLoveAccessory(Accessory):
     """Stuff"""
@@ -85,7 +85,7 @@ class PlantLoveAccessory(Accessory):
         print ("Curret Moisture %s", self.get_moisture_value())
         print ("Curret Light %s", self.get_light_value())
 
-        if (get_moisture_value() < 500):
+        if (self.get_moisture_value() < 500):
 
             print ("Turning Pump On")
             self.turn_pump_on()
