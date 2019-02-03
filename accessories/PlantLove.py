@@ -107,6 +107,7 @@ class PlantLoveAccessory(Accessory):
         if self.blocking ==0:
             print ("serial not blocked")
             current_moisture=self.get_moisture_value()
+            sleep(1)
             current_light=self.get_light_value()
 
             # Log the moisture
