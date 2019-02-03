@@ -51,10 +51,10 @@ class PlantLoveAccessory(Accessory):
     def set_growlamp_status(self, value):
         if (value == 1):
             while blocking==0:
-            self.char_growlamp_status=self.turn_light_on()
+                self.char_growlamp_status=self.turn_light_on()
         if (value ==0):
             while blocking==0:
-            self.char_growlamp_status=self.turn_light_off()
+                self.char_growlamp_status=self.turn_light_off()
 
         logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
 
