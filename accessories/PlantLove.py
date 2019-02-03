@@ -25,11 +25,8 @@ class PlantLoveAccessory(Accessory):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Add the sprinkler
-        serv_sprinkler = self.add_preload_service(
-            'Valve', chars=['Active','InUse','ValveType','SetDuration',
-     'RemainingDuration',])
-
+    # Add the sprinkler
+        serv_sprinkler = self.add_preload_service('Valve', chars=['Active','InUse','ValveType','SetDuration','RemainingDuration',])
     # Configure and set the valve type
         self.char_sprinkler_type = serv_sprinkler.configure_char(
             'ValveType')
@@ -40,20 +37,32 @@ class PlantLoveAccessory(Accessory):
         self.char_sprinkler_active = serv_sprinkler.configure_char(
             'Active', setter_callback=self.set_sprinkler_active)
     # Confgue Duration and Remaining Duration
-
         self.char_sprinkler_duration = serv_sprinkler.configure_char(
             'SetDuration', setter_callback=self.set_sprinkler_duration)
-
         self.char_sprinkler_remainingduration = serv_sprinkler.configure_char(
             'RemainingDuration', setter_callback=self.get_sprinkler_duration)
 
-    #Add grow lamp light on there
+    # Add grow lamp light
         serv_growlamp = self.add_preload_service(
             'Lightbulb', chars=['On'])
         self.char_growlamp_status = serv_growlamp.configure_char(
             'On', setter_callback=self.set_growlamp_status)
 
         self.blocking=0
+    # Add light sensors
+    serv_lightsensor = self.add_preload_service(
+        'LightSensor', chars=['CurrentAmbientLightLevel'])
+    self.char_lightvalue = serv_lightsensor.configure_char(
+        'CurrentAmbientLightLevel')
+
+
+    # Add HumiditySensor sensors
+    serv_humiditysensor = self.add_preload_service(
+        'HumiditySensor', chars=['CurrentRelativeHumidity'])
+    self.char_humidityvalue = serv_humiditysensor.configure_char(
+        'CurrentRelativeHumidity')
+
+    # call back functions
 
     # Duration funcations
     def get_sprinkler_duration(self,value):
@@ -117,6 +126,15 @@ class PlantLoveAccessory(Accessory):
     def get_average_light(self):
         return ""
 
+    def scale_value(self,value,new_high)
+
+        old_low=0
+        old_high=1024
+        new_low=0
+        scaler=float(value)/(old_high-old_low)
+        new_value=scaler*float(new_high)
+        return float(new_value)
+
     @Accessory.run_at_interval(60)
     def run(self):
         logger.debug("Starting Loop Function")
@@ -126,9 +144,11 @@ class PlantLoveAccessory(Accessory):
         # Log the moisture
         logger.debug("Curret Moisture %s", current_moisture)
         self.publish_to_log(MoistureLogPath,current_moisture)
+        self.char_humidityvalue.set_value(scale_value(current_moisture,100))
         # Log the light
         logger.debug("Curret Light %s", current_light)
         self.publish_to_log(LightLogPath,current_light)
+        self.char_lightvalue.set_value(scale_value(current_light,1000))
 
         #if moisture is to low, go ahead and water the plants
 
