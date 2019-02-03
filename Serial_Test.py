@@ -15,12 +15,17 @@ def send_command(command):
     return int(rcv.decode('utf-8'))
 
 
+print ("Light On")
 print(send_command("light_on"))
 sleep(1)
+print ("Pump On")
 print(send_command("pump_on"))
 sleep(1)
+print ("Moisture Value")
 print(send_command("moisture"))
 sleep(1)
+print ("Light Value")
 print(send_command("light"))
 sleep(1)
+print ("Light Off")
 print(send_command("light_off"))
