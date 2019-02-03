@@ -32,10 +32,10 @@ class PlantLoveAccessory(Accessory):
             'Status', setter_callback=self.set_growlamp_status)
 
     def set_sprinkler_status(self, value):
-        logger.debug(f"Sprinkler status changed to {value}")
+        logger.debug("Sprinkler status changed to %s", value)
+
+    def set_sprinkler_duration(self, duration):
+        logger.debug("Sprinkler duration set to %s", duration)
 
     def set_sprinkler_duration(self, value):
-        logger.debug(f"Sprinkler duration set to {value}")
-
-    def set_sprinkler_duration(self, value):
-        logger.debug(f"Grow lamp status changed {value}")
+        logger.debug("Grow lamp status changed %s", value)
