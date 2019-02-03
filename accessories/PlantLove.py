@@ -83,7 +83,7 @@ class PlantLoveAccessory(Accessory):
     def get_light_value(self):
         self.blocking=1
         port.write(str.encode('light\n'))
-        rcv = port.readline
+        rcv = port.readline()
         self.blocking=0
         return int(rcv.decode('utf-8'))
 
@@ -101,7 +101,7 @@ class PlantLoveAccessory(Accessory):
     def get_average_light(self):
         return ""
 
-    @Accessory.run_at_interval(72)
+    @Accessory.run_at_interval(10)
     def run(self):
         print ("Starting Loop Function")
         if self.blocking ==0:
