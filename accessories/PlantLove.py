@@ -40,6 +40,8 @@ class PlantLoveAccessory(Accessory):
         self.char_growlamp_status = serv_growlamp.configure_char(
             'On', setter_callback=self.set_growlamp_status)
 
+        self.blocking=0
+
     def set_sprinkler_status(self, value):
         logger.debug("Sprinkler status changed to %s", value)
 
@@ -48,54 +50,78 @@ class PlantLoveAccessory(Accessory):
 
     def set_growlamp_status(self, value):
         if (value == 1):
-            print ("Turning Lights On")
-            port.write(str.encode('light_on\n'))
-            rcv = port.readline()
-            self.char_growlamp_status=int(rcv.decode('utf-8'))
+            while blocking=0:
+            self.char_growlamp_status=self.turn_light_on()
         if (value ==0):
-            print ("Turning Lights Off")
-            port.write(str.encode('light_off\n'))
-            rcv = port.readline()
-            self.char_growlamp_status=int(rcv.decode('utf-8'))
+            while blocking=0:
+            self.char_growlamp_status=self.turn_light_off()
 
-        logger.debug("Grow lamp status changed %s", value)
+        logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
+
+
+    def turn_pump_on(self):
+        self.blocking=1
+        port.write(str.encode('pump_on\n'))
+        rcv = port.readline()
+        self.blocking=0
+        return int(rcv.decode('utf-8'))
+
+    def turn_light_on(self):
+        self.blocking=1
+        port.write(str.encode('light_on\n'))
+        rcv = port.readline()
+        self.blocking=0
+        return int(rcv.decode('utf-8'))
+
+    def turn_light_off(self):
+        self.blocking=1
+        port.write(str.encode('light_off\n'))
+        rcv = port.readline()
+        self.blocking=0
+        return int(rcv.decode('utf-8'))
 
 
     def get_light_value(self):
+        self.blocking=1
         port.write(str.encode('light\n'))
-        rcv = port.readline()
-        return str(rcv.decode('utf-8'))
+        rcv = port.readline
+        self.blocking=0
+        return int(rcv.decode('utf-8'))
 
     def get_moisture_value(self):
+        self.blocking=1
         port.write(str.encode('moisture\n'))
         rcv = port.readline()
-        return str(rcv.decode('utf-8'))
+        self.blocking=0
+        return int(rcv.decode('utf-8'))
 
     def publish_to_log(self,log_file_path,value):
         with open(log_file_path, "a") as log_file:
             log_file.write("{0},{1}\n".format(strftime("%Y-%m-%d %H:%M:%S"),str(value)))
 
-    def turn_pump_on(self):
-        port.write(str.encode('pump_on\n'))
-
     def get_average_light(self):
         return ""
 
-    @Accessory.run_at_interval(10)
+    @Accessory.run_at_interval(72)
     def run(self):
         print ("Starting Loop Function")
-        self.publish_to_log(LightLogPath,self.get_light_value())
-        self.publish_to_log(MoistureLogPath,self.get_light_value())
+        while self.blocking =0:
+            current_moisture=get_moisture_value()
+            current_light=get_light_value()
 
-        print ("Curret Moisture %s", self.get_moisture_value())
-        print ("Curret Light %s", self.get_light_value())
+        # Log the moisture
+        print ("Curret Moisture %s", current_moisture)
+        self.publish_to_log(MoistureLogPath,current_moisture)
+        # Log the light
+        print ("Curret Light %s", current_light)
+        self.publish_to_log(LightLogPath,current_light)
 
-        if (int(self.get_moisture_value()) < 500):
+        #if moisture is to low, go ahead and water the plants
+
+        if (current_moisture < 500):
 
             print ("Turning Pump On")
-            self.turn_pump_on()
-            rcv = port.readline()
-            self.char_growlamp_status=int(rcv.decode('utf-8'))
+            self.char_growlamp_status = self.turn_pump_on()
             print ("Pump Should Turn off in 2 Seconds")
 
         else:
