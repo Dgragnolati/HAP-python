@@ -72,7 +72,7 @@ class PlantLoveAccessory(Accessory):
                 #self.char_growlamp_status.set_value(self.send_command("light_on"))
                 value=self.request_to_send_command("light_on")
                 self.char_growlamp_status.set_value(value)
-            else if (value ==0):
+            if (value ==0):
                 #self.char_growlamp_status.set_value(self.send_command("light_off"))
                 value=self.request_to_send_command("light_off")
                 self.char_growlamp_status.set_value(value)
