@@ -27,12 +27,15 @@ class PlantLoveAccessory(Accessory):
 
         # Add the sprinkler
         serv_sprinkler = self.add_preload_service(
-            'IrrigationSystem', chars=['Active','ProgramMode','InUse'])
+            'Valve', chars=['Active','InUse','ValveType'])
 
+        self.char_sprinkler_type = serv_sprinkler.configure_char(
+            'ValveType')
+        self.char_sprinkler_type.set_value(0)
         self.char_sprinkler_status = serv_sprinkler.configure_char(
             'InUse', setter_callback=self.set_sprinkler_status)
         self.char_sprinkler_mode = serv_sprinkler.configure_char(
-            'ProgramMode', setter_callback=self.set_sprinkler_program)
+            'Active', setter_callback=self.set_sprinkler_program)
 
         #Add grow lamp
         serv_growlamp = self.add_preload_service(
@@ -114,7 +117,7 @@ class PlantLoveAccessory(Accessory):
                 logger.debug("Turning Pump On")
                 pump_status=self.send_command("pump_on")
                 logger.debug("pump status %s", pump_status)
-                self.char_growlamp_status.set_value(pump_status)
+                self.char_sprinkler_status.set_value(pump_status)
                 logger.debug("Pump Should Turn off in 2 Seconds")
 
             else:
