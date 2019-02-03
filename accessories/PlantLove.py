@@ -49,16 +49,16 @@ class PlantLoveAccessory(Accessory):
         logger.debug("Sprinkler duration set to %s", programmode)
 
     def set_growlamp_status(self, value):
-            logger.debug("Request to change state of growlamp")
+        logger.debug("Request to change state of growlamp")
+        if (self.blocking ==0):
+            toggle_lamp(value)
+        else:
+            while (self.blocking == 1):
+                logger.debug("Waiting to unblock %s", self.blocking)
+                sleep (2)
                 if (self.blocking ==0):
                     toggle_lamp(value)
-                else:
-                    while (self.blocking == 1):
-                        logger.debug("Waiting to unblock %s", self.blocking)
-                        sleep (2)
-                        if (self.blocking ==0):
-                            toggle_lamp(value)
-                            break
+                    break
 
 
     def toggle_lamp(self,value):
