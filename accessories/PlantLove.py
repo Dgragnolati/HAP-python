@@ -59,7 +59,7 @@ class PlantLoveAccessory(Accessory):
             logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
 
 
-    def send_command(command):
+    def send_command(self,command):
         self.blocking=1
         command_string=command+'\n'
         port.write(str.encode(command_string))
