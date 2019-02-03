@@ -3,9 +3,13 @@ import logging
 
 from pyhap.accessory import Accessory
 from pyhap.const import CATEGORY_OTHER
+import serial
+import sys
 
 logger = logging.getLogger(__name__)
+port = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=3.0)
 
+port.write(str.encode('light_on\n'))
 
 class PlantLoveAccessory(Accessory):
     """Stuff"""
@@ -38,4 +42,9 @@ class PlantLoveAccessory(Accessory):
         logger.debug("Sprinkler duration set to %s", programmode)
 
     def set_growlamp_status(self, value):
+        if (value == 1):
+            port.write(str.encode('light_on\n'))
+        if (value ==0):
+            port.write(str.encode('light_off\n'))
+
         logger.debug("Grow lamp status changed %s", value)
