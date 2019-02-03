@@ -50,8 +50,8 @@ class PlantLoveAccessory(Accessory):
 
     def set_growlamp_status(self, value):
 
-            while self.blocking == 1
-                if self.blocking ==0:
+            while (self.blocking == 1):
+                if (self.blocking ==0):
                     if (value == 1):
                         self.send_command("light_on")
                     if (value ==0):
