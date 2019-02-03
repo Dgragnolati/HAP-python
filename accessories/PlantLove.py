@@ -58,12 +58,12 @@ class PlantLoveAccessory(Accessory):
 
 
     def get_light_value(self):
-        ort.write(str.encode('light\n'))
+        port.write(str.encode('light\n'))
         rcv = port.readline()
         return str(rcv.decode('utf-8'))
 
     def get_moisture_value(self):
-        ort.write(str.encode('moisture\n'))
+        port.write(str.encode('moisture\n'))
         rcv = port.readline()
         return str(rcv.decode('utf-8'))
 
