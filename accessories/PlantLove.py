@@ -48,6 +48,14 @@ class PlantLoveAccessory(Accessory):
         logger.debug("Grow lamp status changed %s", value)
 
 
+    def get_light_value(self):
+        ort.write(str.encode('light\n'))
+        rcv = port.readline()
+        return str(rcv.decode('utf-8'))
+
     @Accessory.run_at_interval(10)
     def run(self):
+        port.write(str.encode('light\n'))
+        rcv = port.readline()
+        print (rcv.decode('utf-8'))
         self.char_sprinkler_status=1
