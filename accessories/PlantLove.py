@@ -50,10 +50,10 @@ class PlantLoveAccessory(Accessory):
 
     def set_growlamp_status(self, value):
         if (value == 1):
-            while blocking=0:
+            while blocking==0:
             self.char_growlamp_status=self.turn_light_on()
         if (value ==0):
-            while blocking=0:
+            while blocking==0:
             self.char_growlamp_status=self.turn_light_off()
 
         logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
@@ -105,7 +105,7 @@ class PlantLoveAccessory(Accessory):
     @Accessory.run_at_interval(72)
     def run(self):
         print ("Starting Loop Function")
-        while self.blocking =0:
+        while self.blocking ==0:
             current_moisture=get_moisture_value()
             current_light=get_light_value()
 
