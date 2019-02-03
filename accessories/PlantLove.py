@@ -114,7 +114,7 @@ class PlantLoveAccessory(Accessory):
                 logger.debug("Turning Pump On")
                 pump_status=self.send_command("pump_on")
                 logger.debug("pump status %s", pump_status)
-                self.char_growlamp_status.set_value(pump_status) = 
+                self.char_growlamp_status.set_value(pump_status)
                 logger.debug("Pump Should Turn off in 2 Seconds")
 
             else:
