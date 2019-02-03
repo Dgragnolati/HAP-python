@@ -50,9 +50,13 @@ class PlantLoveAccessory(Accessory):
         if (value == 1):
             print ("Turning Lights On")
             port.write(str.encode('light_on\n'))
+            rcv = port.readline()
+            self.char_growlamp_status=int(rcv.decode('utf-8'))
         if (value ==0):
             print ("Turning Lights Off")
             port.write(str.encode('light_off\n'))
+            rcv = port.readline()
+            self.char_growlamp_status=int(rcv.decode('utf-8'))
 
         logger.debug("Grow lamp status changed %s", value)
 
@@ -82,6 +86,7 @@ class PlantLoveAccessory(Accessory):
         print ("Starting Loop Function")
         self.publish_to_log(LightLogPath,self.get_light_value())
         self.publish_to_log(MoistureLogPath,self.get_light_value())
+
         print ("Curret Moisture %s", self.get_moisture_value())
         print ("Curret Light %s", self.get_light_value())
 
@@ -89,9 +94,9 @@ class PlantLoveAccessory(Accessory):
 
             print ("Turning Pump On")
             self.turn_pump_on()
-            self.char_sprinkler_status=1
-            sleep (3)
-            self.char_sprinkler_status=0
-            print ("Pump Should be off ????")
+            rcv = port.readline()
+            self.char_growlamp_status=int(rcv.decode('utf-8'))
+            print ("Pump Should Turn off in 2 Seconds")
+
         else:
             print ("water seems good")
