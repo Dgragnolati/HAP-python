@@ -6,8 +6,8 @@ from pyhap.const import CATEGORY_OTHER
 import serial
 import sys
 from time import sleep, strftime, time
-with open("/home/pi/HAPcpu_light.csv", "a") as LightLog:
-with open("/home/pi/HAPcpu_moisture.csv", "a") as MoistureLog:
+with open("/home/pi/HAP/light.csv", "a") as LightLog:
+with open("/home/pi/HAP/moisture.csv", "a") as MoistureLog:
 
 # There are serial commands that triger the relays/get data back from analog sensors
 # light,moisture,light_on,light_off,pump_on  (Currently pump on only goes for 2 seconds)
@@ -73,12 +73,19 @@ class PlantLoveAccessory(Accessory):
     def turn_pump_on(self):
         port.write(str.encode('pump_on\n'))
 
+    def get_average_light(self):
+        return ""
+
     @Accessory.run_at_interval(10)
     def run(self):
+
         publish_to_log(LightLog,get_light_value())
         publish_to_log(MoistureLog,get_light_value())
+        print ("Curret Moisture %s", get_moisture_value())
+        print ("Curret Light %s", get_light_value())
 
         if (get_moisture_value() < 500):
+
             print ("Turning Pump On")
             turn_pump_on()
             self.char_sprinkler_status=1
