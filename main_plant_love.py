@@ -13,7 +13,6 @@ from pyhap.accessory import Accessory, Bridge
 from pyhap.accessory_driver import AccessoryDriver
 import pyhap.loader as loader
 from pyhap import camera
-from pyhap.const import CATEGORY_SENSOR
 from accessories.PlantLove import PlantLoveAccessory
 
 logging.basicConfig(level=logging.DEBUG, format="[%(module)s] %(message)s")
@@ -21,7 +20,7 @@ logging.basicConfig(level=logging.DEBUG, format="[%(module)s] %(message)s")
 
 def get_accessory(driver):
     """Call this method to get a standalone Accessory."""
-    return PlantLoveAccessory(driver,"DG_Plants")
+    return PlantLoveAccessory(driver,"Plant Love")
 
 
 # Start the accessory on port 51826
