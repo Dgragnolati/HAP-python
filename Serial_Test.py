@@ -1,5 +1,6 @@
 import serial
 import sys
+from time import sleep
 
 port = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=3.0)
 
