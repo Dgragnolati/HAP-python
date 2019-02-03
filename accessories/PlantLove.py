@@ -80,8 +80,8 @@ class PlantLoveAccessory(Accessory):
     @Accessory.run_at_interval(10)
     def run(self):
         print ("Starting Loop Function")
-        self.publish_to_log(LightLogPath,get_light_value())
-        self.publish_to_log(MoistureLogPath,get_light_value())
+        self.publish_to_log(LightLogPath,self.get_light_value())
+        self.publish_to_log(MoistureLogPath,self.get_light_value())
         print ("Curret Moisture %s", self.get_moisture_value())
         print ("Curret Light %s", self.get_light_value())
 
