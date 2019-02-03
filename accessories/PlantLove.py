@@ -52,53 +52,22 @@ class PlantLoveAccessory(Accessory):
 
 
             if (value == 1 and self.blocking ==0):
-                turn_light_on()
+                self.send_command("light_on")
             if (value ==0 and self.blocking ==0):
-                self.turn_light_off()
+                self.send_command("light_off")
 
             logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
 
 
-    def turn_pump_on(self):
+    def send_command(command):
         self.blocking=1
-        port.write(str.encode('pump_on\n'))
+        command_string=command+'\n'
+        port.write(str.encode(command_string))
         rcv = port.readline()
         port.flushInput()
         self.blocking=0
         return int(rcv.decode('utf-8'))
 
-    def turn_light_on(self):
-        self.blocking=1
-        port.write(str.encode('light_on\n'))
-        rcv = port.readline()
-        port.flushInput()
-        self.blocking=0
-        return int(rcv.decode('utf-8'))
-
-    def turn_light_off(self):
-        self.blocking=1
-        port.write(str.encode('light_off\n'))
-        rcv = port.readline()
-        port.flushInput()
-        self.blocking=0
-        return int(rcv.decode('utf-8'))
-
-
-    def get_light_value(self):
-        self.blocking=1
-        port.write(str.encode('light\n'))
-        rcv = port.readline()
-        port.flushInput()
-        self.blocking=0
-        return int(rcv.decode('utf-8'))
-
-    def get_moisture_value(self):
-        self.blocking=1
-        port.write(str.encode('moisture\n'))
-        rcv = port.readline()
-        port.flushInput()
-        self.blocking=0
-        return int(rcv.decode('utf-8'))
 
     def publish_to_log(self,log_file_path,value):
         with open(log_file_path, "a") as log_file:
@@ -113,9 +82,9 @@ class PlantLoveAccessory(Accessory):
         if self.blocking ==0:
             print ("serial not blocked")
 
-            current_moisture=self.get_moisture_value()
+            current_moisture=self.send_command("moisture")
             sleep(1)
-            current_light=self.get_light_value()
+            current_light=self.send_command("light")
 
             # Log the moisture
             print ("Curret Moisture %s", current_moisture)
@@ -129,7 +98,7 @@ class PlantLoveAccessory(Accessory):
             if (current_moisture < 500):
 
                 print ("Turning Pump On")
-                pump_status=self.turn_pump_on()
+                pump_status=self.send_command("pump_on")
                 print ("pump status %s", pump_status)
                 self.char_growlamp_status = pump_status
                 print ("Pump Should Turn off in 2 Seconds")
