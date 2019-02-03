@@ -49,11 +49,10 @@ class PlantLoveAccessory(Accessory):
         logger.debug("Sprinkler duration set to %s", programmode)
 
     def set_growlamp_status(self, value):
-        if (value == 1):
-            while blocking==0:
+
+            if (value == 1 && blocking ==0):
                 self.char_growlamp_status=self.turn_light_on()
-        if (value ==0):
-            while blocking==0:
+            if (value ==0 && blocking ==0):
                 self.char_growlamp_status=self.turn_light_off()
 
         logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
@@ -105,24 +104,25 @@ class PlantLoveAccessory(Accessory):
     @Accessory.run_at_interval(72)
     def run(self):
         print ("Starting Loop Function")
-        while self.blocking ==0:
+        if self.blocking ==0:
+            print "serial not blocked"
             current_moisture=get_moisture_value()
             current_light=get_light_value()
 
-        # Log the moisture
-        print ("Curret Moisture %s", current_moisture)
-        self.publish_to_log(MoistureLogPath,current_moisture)
-        # Log the light
-        print ("Curret Light %s", current_light)
-        self.publish_to_log(LightLogPath,current_light)
+            # Log the moisture
+            print ("Curret Moisture %s", current_moisture)
+            self.publish_to_log(MoistureLogPath,current_moisture)
+            # Log the light
+            print ("Curret Light %s", current_light)
+            self.publish_to_log(LightLogPath,current_light)
 
-        #if moisture is to low, go ahead and water the plants
+            #if moisture is to low, go ahead and water the plants
 
-        if (current_moisture < 500):
+            if (current_moisture < 500):
 
-            print ("Turning Pump On")
-            self.char_growlamp_status = self.turn_pump_on()
-            print ("Pump Should Turn off in 2 Seconds")
+                print ("Turning Pump On")
+                self.char_growlamp_status = self.turn_pump_on()
+                print ("Pump Should Turn off in 2 Seconds")
 
-        else:
-            print ("water seems good")
+            else:
+                print ("water seems good")
