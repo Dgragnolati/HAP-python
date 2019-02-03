@@ -50,10 +50,11 @@ class PlantLoveAccessory(Accessory):
 
     def set_growlamp_status(self, value):
 
+
             if (value == 1 and self.blocking ==0):
-                self.char_growlamp_status=self.turn_light_on()
+                turn_light_on()
             if (value ==0 and self.blocking ==0):
-                self.char_growlamp_status=self.turn_light_off()
+                self.turn_light_off()
 
             logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
 
@@ -111,6 +112,7 @@ class PlantLoveAccessory(Accessory):
         print ("Starting Loop Function")
         if self.blocking ==0:
             print ("serial not blocked")
+            print ("phone thinks light status is " + self.char_growlamp_status)
             current_moisture=self.get_moisture_value()
             sleep(1)
             current_light=self.get_light_value()
