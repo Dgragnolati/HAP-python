@@ -5,6 +5,13 @@ from pyhap.accessory import Accessory
 from pyhap.const import CATEGORY_OTHER
 import serial
 import sys
+from time import sleep, strftime, time
+with open("/home/pi/HAPcpu_light.csv", "a") as LightLog:
+with open("/home/pi/HAPcpu_moisture.csv", "a") as MoistureLog:
+
+# There are serial commands that triger the relays/get data back from analog sensors
+# light,moisture,light_on,light_off,pump_on  (Currently pump on only goes for 2 seconds)
+
 
 logger = logging.getLogger(__name__)
 port = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=3.0)
@@ -41,8 +48,10 @@ class PlantLoveAccessory(Accessory):
 
     def set_growlamp_status(self, value):
         if (value == 1):
+            print ("Turning Lights On")
             port.write(str.encode('light_on\n'))
         if (value ==0):
+            print ("Turning Lights Off")
             port.write(str.encode('light_off\n'))
 
         logger.debug("Grow lamp status changed %s", value)
@@ -53,9 +62,28 @@ class PlantLoveAccessory(Accessory):
         rcv = port.readline()
         return str(rcv.decode('utf-8'))
 
+    def get_moisture_value(self):
+        ort.write(str.encode('moisture\n'))
+        rcv = port.readline()
+        return str(rcv.decode('utf-8'))
+
+    def publish_to_log(self,log_file,value):
+        log_file.write("{0},{1}\n".format(strftime("%Y-%m-%d %H:%M:%S"),str(value)))
+
+    def turn_pump_on(self):
+        port.write(str.encode('pump_on\n'))
+
     @Accessory.run_at_interval(10)
     def run(self):
-        port.write(str.encode('light\n'))
-        rcv = port.readline()
-        print (rcv.decode('utf-8'))
-        self.char_sprinkler_status=1
+        publish_to_log(LightLog,get_light_value())
+        publish_to_log(MoistureLog,get_light_value())
+
+        if (get_moisture_value() < 500):
+            print ("Turning Pump On")
+            turn_pump_on()
+            self.char_sprinkler_status=1
+            sleep (3)
+            self.char_sprinkler_status=0
+            print ("Pump Should be off ????")
+        else:
+            print ("water seems good")
