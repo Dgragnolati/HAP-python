@@ -65,10 +65,12 @@ class PlantLoveAccessory(Accessory):
             self.blocking=1
             if (value == 1):
                 #self.char_growlamp_status.set_value(self.send_command("light_on"))
-                self.send_command("light_on")
+                value=self.send_command("light_on")
+                self.char_growlamp_status.set_value(value)
             if (value ==0):
                 #self.char_growlamp_status.set_value(self.send_command("light_off"))
-                self.send_command("light_off")
+                value=self.send_command("light_off")
+                self.char_growlamp_status.set_value(value)
             logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
 
     def send_command(self,command):
@@ -112,7 +114,7 @@ class PlantLoveAccessory(Accessory):
                 logger.debug("Turning Pump On")
                 pump_status=self.send_command("pump_on")
                 logger.debug("pump status %s", pump_status)
-                self.char_growlamp_status = pump_status
+                self.char_growlamp_status.set_value(pump_status) = 
                 logger.debug("Pump Should Turn off in 2 Seconds")
 
             else:
