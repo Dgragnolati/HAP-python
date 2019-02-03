@@ -9,4 +9,4 @@ port = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=3.0)
 port.write(str.encode('light\n'))
 rcv = port.readline()
 
-print (msg.decode(rcv))
+print (rcv.decode('utf-8'))
