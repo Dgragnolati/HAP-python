@@ -34,7 +34,6 @@ class PlantLoveAccessory(Accessory):
         self.char_sprinkler_mode = serv_sprinkler.configure_char(
             'ProgramMode', setter_callback=self.set_sprinkler_program)
 
-
         #Add grow lamp
         serv_growlamp = self.add_preload_service(
             'Lightbulb', chars=['On'])
