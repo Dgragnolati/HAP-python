@@ -94,7 +94,6 @@ class PlantLoveAccessory(Accessory):
 
     # Used to send commands to the serial port (Puts a blocking flag while in use)
     def send_command(self,command):
-        while:blcokign
         self.blocking=1
         port.flushInput()
         command_string=command+'\n'
