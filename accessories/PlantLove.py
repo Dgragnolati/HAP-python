@@ -2,7 +2,7 @@
 import logging
 
 from pyhap.accessory import Accessory
-from pyhap.const import CATEGORY_FAN
+from pyhap.const import CATEGORY_OTHER
 
 logger = logging.getLogger(__name__)
 
@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class PlantLoveAccessory(Accessory):
     """Stuff"""
 
-    category = CATEGORY_SPRINKLER
+    category = CATEGORY_OTHER
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
