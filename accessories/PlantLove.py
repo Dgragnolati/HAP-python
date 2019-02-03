@@ -64,9 +64,11 @@ class PlantLoveAccessory(Accessory):
     def toggle_lamp(self,value):
             self.blocking=1
             if (value == 1):
-                self.char_growlamp_status.set_value(self.send_command("light_on"))
+                #self.char_growlamp_status.set_value(self.send_command("light_on"))
+                self.send_command("light_on")
             if (value ==0):
-                self.char_growlamp_status.set_value(self.send_command("light_off"))
+                #self.char_growlamp_status.set_value(self.send_command("light_off"))
+                self.send_command("light_off")
             logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
 
     def send_command(self,command):
