@@ -80,15 +80,15 @@ class PlantLoveAccessory(Accessory):
     @Accessory.run_at_interval(10)
     def run(self):
         print ("Starting Loop Function")
-        #publish_to_log(LightLogPath,get_light_value())
-        #publish_to_log(MoistureLogPath,get_light_value())
-        print ("Curret Moisture %s", get_moisture_value())
-        print ("Curret Light %s", get_light_value())
+        self.publish_to_log(LightLogPath,get_light_value())
+        self.publish_to_log(MoistureLogPath,get_light_value())
+        print ("Curret Moisture %s", self.get_moisture_value())
+        print ("Curret Light %s", self.get_light_value())
 
         if (get_moisture_value() < 500):
 
             print ("Turning Pump On")
-            turn_pump_on()
+            self.turn_pump_on()
             self.char_sprinkler_status=1
             sleep (3)
             self.char_sprinkler_status=0
