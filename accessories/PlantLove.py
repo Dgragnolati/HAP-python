@@ -44,7 +44,7 @@ class PlantLoveAccessory(Accessory):
         self.char_sprinkler_duration = serv_sprinkler.configure_char(
             'SetDuration', setter_callback=self.set_sprinkler_duration)
 
-        self.char_sprinkler_duration = serv_sprinkler.configure_char(
+        self.char_sprinkler_remainingduration = serv_sprinkler.configure_char(
             'RemainingDuration', setter_callback=self.get_sprinkler_duration)
 
     #Add grow lamp light on there
@@ -63,9 +63,14 @@ class PlantLoveAccessory(Accessory):
     # Sprinkler Status
     def set_sprinkler_status(self, value):
         logger.debug("Sprinkler status changed to %s", value)
-
-    def set_sprinkler_active(self, programmode):
-        logger.debug("Sprinkler activate status to %s", programmode)
+    def set_sprinkler_active(self, value):
+        logger.debug("Sprinkler activate status to %s", value)
+        if self.char_sprinkler_active==1:
+            self.request_to_send_command("pump_on")
+            self.char_sprinkler_status.set_value(1)
+            sleep(2)
+            self.char_sprinkler_status.set_value(0)
+            self.char_sprinkler_active.set_value(0)
 
     def set_growlamp_status(self, value):
             if (value == 1):
@@ -125,15 +130,17 @@ class PlantLoveAccessory(Accessory):
 
         #if moisture is to low, go ahead and water the plants
 
-        if (current_moisture < 500):
+        if (current_moisture < 60):
 
             logger.debug("Turning Pump On")
             pump_status=self.request_to_send_command("pump_on")
             logger.debug("pump status %s", pump_status)
             self.char_sprinkler_active.set_value(pump_status)
+            self.char_sprinkler_status.set_value(1)
             logger.debug("Pump Should Turn off in 2 Seconds")
             sleep (2)
             self.char_sprinkler_active.set_value(0)
+            self.char_sprinkler_status.set_value(0)
 
         else:
             logger.debug("water seems good")
