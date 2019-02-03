@@ -126,7 +126,8 @@ class PlantLoveAccessory(Accessory):
     def get_average_light(self):
         return ""
 
-    def scale_value(self,value,new_high)
+    #Funcation to scale a number from a sensor to one that HomeKit can read
+    def scale_value(self,value,new_high):
 
         old_low=0
         old_high=1024
