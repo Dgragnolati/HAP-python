@@ -46,3 +46,8 @@ class PlantLoveAccessory(Accessory):
             port.write(str.encode('light_off\n'))
 
         logger.debug("Grow lamp status changed %s", value)
+
+
+    @Accessory.run_at_interval(10)
+    def run(self):
+        self.char_sprinkler_status=1
