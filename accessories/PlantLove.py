@@ -6,8 +6,7 @@ from pyhap.const import CATEGORY_OTHER
 import serial
 import sys
 from time import sleep, strftime, time
-with open("/home/pi/HAP/light.csv", "a") as LightLog:
-with open("/home/pi/HAP/moisture.csv", "a") as MoistureLog:
+
 
 # There are serial commands that triger the relays/get data back from analog sensors
 # light,moisture,light_on,light_off,pump_on  (Currently pump on only goes for 2 seconds)
@@ -15,6 +14,8 @@ with open("/home/pi/HAP/moisture.csv", "a") as MoistureLog:
 
 logger = logging.getLogger(__name__)
 port = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=3.0)
+LightLogPath = "/home/pi/HAP/light.csv"
+MoistureLogPath = "/home/pi/HAP/moisture.csv"
 
 class PlantLoveAccessory(Accessory):
     """Stuff"""
@@ -67,8 +68,9 @@ class PlantLoveAccessory(Accessory):
         rcv = port.readline()
         return str(rcv.decode('utf-8'))
 
-    def publish_to_log(self,log_file,value):
-        log_file.write("{0},{1}\n".format(strftime("%Y-%m-%d %H:%M:%S"),str(value)))
+    def publish_to_log(self,log_file_path,value):
+        with open(log_file_path, "a") as log_file
+            log_file.write("{0},{1}\n".format(strftime("%Y-%m-%d %H:%M:%S"),str(value)))
 
     def turn_pump_on(self):
         port.write(str.encode('pump_on\n'))
