@@ -49,18 +49,16 @@ class PlantLoveAccessory(Accessory):
             'On', setter_callback=self.set_growlamp_status)
 
         self.blocking=0
-    # Add light sensors
-    serv_lightsensor = self.add_preload_service(
-        'LightSensor', chars=['CurrentAmbientLightLevel'])
-    self.char_lightvalue = serv_lightsensor.configure_char(
-        'CurrentAmbientLightLevel')
+        # Add light sensors
+        serv_lightsensor = self.add_preload_service('LightSensor', chars=['CurrentAmbientLightLevel'])
+        self.char_lightvalue = serv_lightsensor.configure_char(
+            'CurrentAmbientLightLevel')
 
 
-    # Add HumiditySensor sensors
-    serv_humiditysensor = self.add_preload_service(
-        'HumiditySensor', chars=['CurrentRelativeHumidity'])
-    self.char_humidityvalue = serv_humiditysensor.configure_char(
-        'CurrentRelativeHumidity')
+        # Add HumiditySensor sensors
+        serv_humiditysensor = self.add_preload_service('HumiditySensor', chars=['CurrentRelativeHumidity'])
+        self.char_humidityvalue = serv_humiditysensor.configure_char(
+            'CurrentRelativeHumidity')
 
     # call back functions
 
