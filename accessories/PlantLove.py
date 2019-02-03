@@ -52,8 +52,8 @@ class PlantLoveAccessory(Accessory):
             logger.debug("Request to change state of growlamp")
             while (self.blocking == 1):
                 logger.debug("Checking Serial Block or Not %s", self.blocking)
-
                 if (self.blocking ==0):
+                    self.blocking=1
                     if (value == 1):
                         self.send_command("light_on")
                     if (value ==0):
