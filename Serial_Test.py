@@ -13,4 +13,4 @@ def send_command(command):
     #self.blocking=0
     return int(rcv.decode('utf-8'))
 
-send_command("light")
+print(send_command("light"))
