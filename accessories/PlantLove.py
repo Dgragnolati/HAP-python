@@ -49,8 +49,10 @@ class PlantLoveAccessory(Accessory):
         logger.debug("Sprinkler duration set to %s", programmode)
 
     def set_growlamp_status(self, value):
-
+            logger.debug("Request to change state of growlamp")
             while (self.blocking == 1):
+                logger.debug("Checking Serial Block or Not %s", self.blocking)
+
                 if (self.blocking ==0):
                     if (value == 1):
                         self.send_command("light_on")
@@ -78,30 +80,30 @@ class PlantLoveAccessory(Accessory):
 
     @Accessory.run_at_interval(10)
     def run(self):
-        print ("Starting Loop Function")
+        logger.debug("Starting Loop Function")
         if self.blocking ==0:
-            print ("serial not blocked")
+            logger.debug("serial not blocked")
 
             current_moisture=self.send_command("moisture")
             sleep(1)
             current_light=self.send_command("light")
 
             # Log the moisture
-            print ("Curret Moisture %s", current_moisture)
+            logger.debug("Curret Moisture %s", current_moisture)
             self.publish_to_log(MoistureLogPath,current_moisture)
             # Log the light
-            print ("Curret Light %s", current_light)
+            logger.debug("Curret Light %s", current_light)
             self.publish_to_log(LightLogPath,current_light)
 
            #if moisture is to low, go ahead and water the plants
 
             if (current_moisture < 500):
 
-                print ("Turning Pump On")
+                logger.debug("Turning Pump On")
                 pump_status=self.send_command("pump_on")
-                print ("pump status %s", pump_status)
+                logger.debug("pump status %s", pump_status)
                 self.char_growlamp_status = pump_status
-                print ("Pump Should Turn off in 2 Seconds")
+                logger.debug("Pump Should Turn off in 2 Seconds")
 
             else:
-                print ("water seems good")
+                logger.debug("water seems good")
