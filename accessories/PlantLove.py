@@ -63,10 +63,10 @@ class PlantLoveAccessory(Accessory):
 
     def send_command(self,command):
         self.blocking=1
+        port.flushInput()
         command_string=command+'\n'
         port.write(str.encode(command_string))
         rcv = port.readline()
-        port.flushInput()
         self.blocking=0
         return int(rcv.decode('utf-8'))
 
