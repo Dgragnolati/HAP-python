@@ -17,25 +17,25 @@ class PlantLoveAccessory(Accessory):
 
         # Add the sprinkler
         serv_sprinkler = self.add_preload_service(
-            'Sprinkler', chars=['Status','Duration'])
+            'IrrigationSystem', chars=['Active','ProgramMode','InUse'])
 
         self.char_sprinkler_status = serv_sprinkler.configure_char(
-            'Status', setter_callback=self.set_sprinkler_status)
-        self.char_sprinkler_duration = serv_sprinkler.configure_char(
-            'Duration', setter_callback=self.set_sprinkler_duration)
+            'Active', setter_callback=self.set_sprinkler_status)
+        self.char_sprinkler_mode = serv_sprinkler.configure_char(
+            'ProgramMode', setter_callback=self.set_sprinkler_program)
 
 
         #Add grow lamp
         serv_growlamp = self.add_preload_service(
-            'Light', chars=['Status'])
+            'Lightbulb', chars=['On'])
         self.char_growlamp_status = serv_growlamp.configure_char(
-            'Status', setter_callback=self.set_growlamp_status)
+            'On', setter_callback=self.set_growlamp_status)
 
     def set_sprinkler_status(self, value):
         logger.debug("Sprinkler status changed to %s", value)
 
-    def set_sprinkler_duration(self, duration):
-        logger.debug("Sprinkler duration set to %s", duration)
+    def set_sprinkler_program(self, programmode):
+        logger.debug("Sprinkler duration set to %s", programmode)
 
     def set_sprinkler_duration(self, value):
         logger.debug("Grow lamp status changed %s", value)
