@@ -5,3 +5,4 @@ pycryptodome
 pyqrcode
 tlslite-ng
 zeroconf
+pyserial
