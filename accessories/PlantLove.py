@@ -85,7 +85,7 @@ class PlantLoveAccessory(Accessory):
         print ("Curret Moisture %s", self.get_moisture_value())
         print ("Curret Light %s", self.get_light_value())
 
-        if (self.get_moisture_value() < 500):
+        if (int(self.get_moisture_value()) < 500):
 
             print ("Turning Pump On")
             self.turn_pump_on()
