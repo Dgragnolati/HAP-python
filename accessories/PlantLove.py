@@ -65,6 +65,8 @@ class PlantLoveAccessory(Accessory):
         logger.debug("Sprinkler status changed to %s", value)
     def set_sprinkler_active(self, value):
         logger.debug("Sprinkler activate status to %s", value)
+        logger.debug("Sprinker Inuse %s",self.char_sprinkler_status)
+        logger.debug("Sprinker Activate %s",self.char_sprinkler_active)
         if self.char_sprinkler_active==1:
             self.request_to_send_command("pump_on")
             self.char_sprinkler_status.set_value(1)
@@ -115,7 +117,7 @@ class PlantLoveAccessory(Accessory):
     def get_average_light(self):
         return ""
 
-    @Accessory.run_at_interval(500)
+    @Accessory.run_at_interval(60)
     def run(self):
         logger.debug("Starting Loop Function")
         # Request serial info from UART for moisture + light
@@ -130,7 +132,7 @@ class PlantLoveAccessory(Accessory):
 
         #if moisture is to low, go ahead and water the plants
 
-        if (current_moisture < 60):
+        if (current_moisture < 500):
 
             logger.debug("Turning Pump On")
             pump_status=self.request_to_send_command("pump_on")
