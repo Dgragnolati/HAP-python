@@ -55,7 +55,7 @@ class PlantLoveAccessory(Accessory):
             if (value ==0 and self.blocking ==0):
                 self.char_growlamp_status=self.turn_light_off()
 
-        logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
+            logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
 
 
     def turn_pump_on(self):
