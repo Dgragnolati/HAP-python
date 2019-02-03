@@ -14,7 +14,7 @@ from pyhap.accessory_driver import AccessoryDriver
 import pyhap.loader as loader
 from pyhap import camera
 from pyhap.const import CATEGORY_SENSOR
-from accessories.PLantLove import PlantLoveAccessory
+from accessories.PlantLove import PlantLoveAccessory
 
 logging.basicConfig(level=logging.DEBUG, format="[%(module)s] %(message)s")
 
