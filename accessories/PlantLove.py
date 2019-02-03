@@ -105,7 +105,7 @@ class PlantLoveAccessory(Accessory):
     def run(self):
         print ("Starting Loop Function")
         if self.blocking ==0:
-            print "serial not blocked"
+            print ("serial not blocked")
             current_moisture=self.get_moisture_value()
             current_light=self.get_light_value()
 
