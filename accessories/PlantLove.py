@@ -13,7 +13,7 @@ from time import sleep, strftime, time
 
 
 logger = logging.getLogger(__name__)
-port = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=3.0)
+port = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=6.0)
 LightLogPath = "/home/pi/HAP/HAP-python/light.csv"
 MoistureLogPath = "/home/pi/HAP/HAP-python/moisture.csv"
 
@@ -124,7 +124,7 @@ class PlantLoveAccessory(Accessory):
             print ("Curret Light %s", current_light)
             self.publish_to_log(LightLogPath,current_light)
 
-            #if moisture is to low, go ahead and water the plants
+           #if moisture is to low, go ahead and water the plants
 
             if (current_moisture < 500):
 
