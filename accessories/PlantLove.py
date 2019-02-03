@@ -62,6 +62,7 @@ class PlantLoveAccessory(Accessory):
         self.blocking=1
         port.write(str.encode('pump_on\n'))
         rcv = port.readline()
+        port.flushInput()
         self.blocking=0
         return int(rcv.decode('utf-8'))
 
@@ -69,6 +70,7 @@ class PlantLoveAccessory(Accessory):
         self.blocking=1
         port.write(str.encode('light_on\n'))
         rcv = port.readline()
+        port.flushInput()
         self.blocking=0
         return int(rcv.decode('utf-8'))
 
@@ -76,6 +78,7 @@ class PlantLoveAccessory(Accessory):
         self.blocking=1
         port.write(str.encode('light_off\n'))
         rcv = port.readline()
+        port.flushInput()
         self.blocking=0
         return int(rcv.decode('utf-8'))
 
@@ -84,6 +87,7 @@ class PlantLoveAccessory(Accessory):
         self.blocking=1
         port.write(str.encode('light\n'))
         rcv = port.readline()
+        port.flushInput()
         self.blocking=0
         return int(rcv.decode('utf-8'))
 
@@ -91,6 +95,7 @@ class PlantLoveAccessory(Accessory):
         self.blocking=1
         port.write(str.encode('moisture\n'))
         rcv = port.readline()
+        port.flushInput()
         self.blocking=0
         return int(rcv.decode('utf-8'))
 
