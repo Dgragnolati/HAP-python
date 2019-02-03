@@ -67,7 +67,7 @@ class PlantLoveAccessory(Accessory):
         logger.debug("Sprinkler activate status to %s", value)
         logger.debug("Sprinker Inuse %s",self.char_sprinkler_status)
         logger.debug("Sprinker Activate %s",self.char_sprinkler_active)
-        if self.char_sprinkler_active==1:
+        if (value==1):
             self.request_to_send_command("pump_on")
             self.char_sprinkler_status.set_value(1)
             sleep(2)
