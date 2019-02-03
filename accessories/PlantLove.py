@@ -37,5 +37,5 @@ class PlantLoveAccessory(Accessory):
     def set_sprinkler_program(self, programmode):
         logger.debug("Sprinkler duration set to %s", programmode)
 
-    def set_sprinkler_duration(self, value):
+    def set_growlamp_status(self, value):
         logger.debug("Grow lamp status changed %s", value)
