@@ -50,16 +50,24 @@ class PlantLoveAccessory(Accessory):
 
     def set_growlamp_status(self, value):
             logger.debug("Request to change state of growlamp")
-            while (self.blocking == 1):
-                logger.debug("Checking Serial Block or Not %s", self.blocking)
                 if (self.blocking ==0):
-                    self.blocking=1
-                    if (value == 1):
-                        self.char_growlamp_status.set_value(self.send_command("light_on"))
-                    if (value ==0):
-                        self.char_growlamp_status.set_value(self.send_command("light_off"))
-                    logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
-                    break
+                    toggle_lamp(value)
+                else:
+                    while (self.blocking == 1):
+                        logger.debug("Waiting to unblock %s", self.blocking)
+                        sleep (2)
+                        if (self.blocking ==0):
+                            toggle_lamp(value)
+                            break
+
+
+    def toggle_lamp(self,value):
+            self.blocking=1
+            if (value == 1):
+                self.char_growlamp_status.set_value(self.send_command("light_on"))
+            if (value ==0):
+                self.char_growlamp_status.set_value(self.send_command("light_off"))
+            logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
 
     def send_command(self,command):
         self.blocking=1
@@ -78,7 +86,7 @@ class PlantLoveAccessory(Accessory):
     def get_average_light(self):
         return ""
 
-    @Accessory.run_at_interval(600)
+    @Accessory.run_at_interval(10)
     def run(self):
         logger.debug("Starting Loop Function")
         if self.blocking ==0:
