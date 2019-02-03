@@ -6,3 +6,4 @@ pyqrcode
 tlslite-ng
 zeroconf
 pyserial
+pigpio
