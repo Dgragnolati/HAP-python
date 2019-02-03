@@ -55,9 +55,9 @@ class PlantLoveAccessory(Accessory):
                 if (self.blocking ==0):
                     self.blocking=1
                     if (value == 1):
-                        self.send_command("light_on")
+                        self.char_growlamp_status.set_value(self.send_command("light_on"))
                     if (value ==0):
-                        self.send_command("light_off")
+                        self.char_growlamp_status.set_value(self.send_command("light_off"))
                     logger.debug("Grow lamp status changed %s", self.char_growlamp_status)
                     break
 
