@@ -142,11 +142,11 @@ class PlantLoveAccessory(Accessory):
         # Log the moisture
         logger.debug("Curret Moisture %s", current_moisture)
         self.publish_to_log(MoistureLogPath,current_moisture)
-        self.char_humidityvalue.set_value(scale_value(current_moisture,100))
+        self.char_humidityvalue.set_value(self.scale_value(current_moisture,100))
         # Log the light
         logger.debug("Curret Light %s", current_light)
         self.publish_to_log(LightLogPath,current_light)
-        self.char_lightvalue.set_value(scale_value(current_light,1000))
+        self.char_lightvalue.set_value(self.scale_value(current_light,1000))
 
         #if moisture is to low, go ahead and water the plants
 
