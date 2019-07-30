@@ -6,6 +6,7 @@ from pyhap.const import CATEGORY_OTHER
 import serial
 import sys
 from time import sleep, strftime, time
+import datetime
 
 
 # There are serial commands that triger the relays/get data back from analog sensors
@@ -135,6 +136,7 @@ class PlantLoveAccessory(Accessory):
 
     @Accessory.run_at_interval(60)
     def run(self):
+        self.watercounter=0
         logger.debug("Starting Loop Function")
         # Request serial info from UART for moisture + light
         current_moisture=self.request_to_send_command("moisture")
@@ -150,8 +152,9 @@ class PlantLoveAccessory(Accessory):
 
         #if moisture is to low, go ahead and water the plants
 
-        if (current_moisture < 500):
 
+        if (current_moisture < 500 and datetime.datetime.now()>(self.watercounter+datetime.timedelta(hours=24))):
+            self.watercounter=datetime.datetime.now()
             logger.debug("Turning Pump On")
             pump_status=self.request_to_send_command("pump_on")
             logger.debug("pump status %s", pump_status)
@@ -161,6 +164,7 @@ class PlantLoveAccessory(Accessory):
             sleep (2)
             self.char_sprinkler_active.set_value(0)
             self.char_sprinkler_status.set_value(0)
+
 
         else:
             logger.debug("water seems good")
