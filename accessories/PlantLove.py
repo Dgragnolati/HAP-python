@@ -26,6 +26,10 @@ class PlantLoveAccessory(Accessory):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+
+
+    # set the time the system was first turned on
+        self.watercounter=datetime.datetime.now()
     # Add the sprinkler
         serv_sprinkler = self.add_preload_service('Valve', chars=['Active','InUse','ValveType','SetDuration','RemainingDuration',])
     # Configure and set the valve type
@@ -76,7 +80,7 @@ class PlantLoveAccessory(Accessory):
         if (value==1):
             self.request_to_send_command("pump_on")
             self.char_sprinkler_status.set_value(1)
-            sleep(2)
+            sleep(10)
             self.char_sprinkler_status.set_value(0)
             self.char_sprinkler_active.set_value(0)
 
@@ -136,7 +140,7 @@ class PlantLoveAccessory(Accessory):
 
     @Accessory.run_at_interval(60)
     def run(self):
-        self.watercounter=0
+
         logger.debug("Starting Loop Function")
         # Request serial info from UART for moisture + light
         current_moisture=self.request_to_send_command("moisture")
@@ -153,7 +157,7 @@ class PlantLoveAccessory(Accessory):
         #if moisture is to low, go ahead and water the plants
 
 
-        if (current_moisture < 500 and datetime.datetime.now()>(self.watercounter+datetime.timedelta(hours=24))):
+        if (current_moisture < 500 and datetime.datetime.now()>(self.watercounter+datetime.timedelta(hours=12))):
             self.watercounter=datetime.datetime.now()
             logger.debug("Turning Pump On")
             pump_status=self.request_to_send_command("pump_on")
@@ -161,7 +165,7 @@ class PlantLoveAccessory(Accessory):
             self.char_sprinkler_active.set_value(pump_status)
             self.char_sprinkler_status.set_value(1)
             logger.debug("Pump Should Turn off in 2 Seconds")
-            sleep (2)
+            sleep (10)
             self.char_sprinkler_active.set_value(0)
             self.char_sprinkler_status.set_value(0)
 
